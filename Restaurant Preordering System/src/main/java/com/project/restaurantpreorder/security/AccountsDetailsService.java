@@ -1,7 +1,7 @@
 package com.project.restaurantpreorder.security;
 
-import com.project.restaurantpreorder.model.Customer;
-import com.project.restaurantpreorder.repository.CustomerRepository;
+import com.project.restaurantpreorder.model.Accounts;
+import com.project.restaurantpreorder.repository.AccountsRepository;
 import org.jspecify.annotations.NullMarked;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -9,24 +9,24 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
-public class CustomerDetailsService implements UserDetailsService {
+public class AccountsDetailsService implements UserDetailsService {
 
-    private final CustomerRepository customerRepository;
+    private final AccountsRepository accountsRepository;
 
-    public CustomerDetailsService(CustomerRepository customerRepository){
-        this.customerRepository = customerRepository;
+    public AccountsDetailsService(AccountsRepository accountsRepository){
+        this.accountsRepository = accountsRepository;
     }
 
     @Override
     @NullMarked
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        Customer customer = customerRepository
+        Accounts account = accountsRepository
                 .findByEmail(email)
                 .orElseThrow(()->
                     new UsernameNotFoundException(
                             "Customer not found"
                     )
                 );
-        return new CustomerPrincipal(customer);
+        return new AccountsPrincipal(account);
     }
 }

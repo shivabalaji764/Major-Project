@@ -8,18 +8,19 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
-@SuppressWarnings("JpaDataSourceORMInspection")
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "customers")
-public class Customer {
+@Table(name = "accounts")
+public class Accounts {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,7 +34,7 @@ public class Customer {
     @NotBlank(message = "Email is Required")
     @Email(message = "Invalid Email Format")
     @Size(max = 100, message = "Email Cannot Exceed 100 Characters")
-    @Column(name = "email", nullable = false, length = 100)
+    @Column(name = "email", nullable = false, length = 100, unique = true)
     private String email;
 
     @NotBlank(message = "Mobile is Required")
@@ -41,7 +42,7 @@ public class Customer {
             regexp = "^(?:(?:\\+91|0)?[ -]?)?[6-9]\\d{9}$",
             message = "Invalid Mobile Number"
     )
-    @Column(name = "mobile", nullable = false, length = 13)
+    @Column(name = "mobile", nullable = false, length = 13, unique = true)
     private String mobile;
 
     @NotBlank(message = "Password is required")
@@ -66,8 +67,8 @@ public class Customer {
 
     @PrePersist
     protected void onCreate(){
-        createdAt = LocalDateTime.now();
-        updatedAt = LocalDateTime.now();
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
     }
 
     @PreUpdate

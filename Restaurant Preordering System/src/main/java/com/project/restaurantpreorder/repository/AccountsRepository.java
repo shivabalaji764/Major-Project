@@ -1,14 +1,14 @@
 package com.project.restaurantpreorder.repository;
 
-import com.project.restaurantpreorder.model.Customer;
+import com.project.restaurantpreorder.model.Accounts;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
 @Repository
-public interface CustomerRepository extends JpaRepository<Customer, Long> {
+public interface AccountsRepository extends JpaRepository<Accounts, Long> {
 
-    Optional<Customer> findByEmail(String email);
+    Optional<Accounts> findByEmail(String email);
 
 }
