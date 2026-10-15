@@ -1,6 +1,8 @@
 package com.project.restaurantpreorder.controller;
 
-import com.project.restaurantpreorder.dto.CustomerRegistrationDTO;
+import com.project.restaurantpreorder.dto.LoginDTO;
+import com.project.restaurantpreorder.dto.LoginResponseDTO;
+import com.project.restaurantpreorder.dto.RegistrationDTO;
 import com.project.restaurantpreorder.service.AccountsService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,10 +22,10 @@ public class AccountsController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody CustomerRegistrationDTO customer){
+    public ResponseEntity<?> register(@RequestBody RegistrationDTO account){
         try {
-            customer.setPassword(encoder.encode(customer.getPassword()));
-            accountsService.register(customer);
+            account.setPassword(encoder.encode(account.getPassword()));
+            accountsService.register(account);
             return ResponseEntity
                     .status(HttpStatus.OK)
                     .body("Registration successful");
@@ -31,6 +33,17 @@ public class AccountsController {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
                     .body(exception.getMessage());
+        }
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<LoginResponseDTO> login(@RequestBody LoginDTO account){
+        try{
+            LoginResponseDTO response = accountsService.verify(account);
+            return ResponseEntity.status(200).body(response);
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
     }
 }

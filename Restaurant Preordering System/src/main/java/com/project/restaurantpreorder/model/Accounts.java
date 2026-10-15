@@ -26,11 +26,6 @@ public class Accounts {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
-    @Size(min = 2, max = 50, message = "Name must contain 2-50 characters only")
-    @Column(name = "name", nullable = false, length = 50)
-    private String name;
-
     @NotBlank(message = "Email is Required")
     @Email(message = "Invalid Email Format")
     @Size(max = 100, message = "Email Cannot Exceed 100 Characters")
@@ -55,7 +50,7 @@ public class Accounts {
     private Role role;
 
     @Column(name = "enabled", nullable = false)
-    private boolean enabled = true;
+    private boolean enabled;
 
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
@@ -63,12 +58,20 @@ public class Accounts {
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
 
+    @OneToOne(
+            mappedBy = "account",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private CustomerProfile customerProfile;
+
 
 
     @PrePersist
     protected void onCreate(){
         this.createdAt = LocalDateTime.now();
         this.updatedAt = LocalDateTime.now();
+        this.enabled = true;
     }
 
     @PreUpdate

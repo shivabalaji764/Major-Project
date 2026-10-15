@@ -24,7 +24,7 @@ public class AccountsDetailsService implements UserDetailsService {
                 .findByEmail(email)
                 .orElseThrow(()->
                     new UsernameNotFoundException(
-                            "Customer not found"
+                            "Account not found"
                     )
                 );
         return new AccountsPrincipal(account);
